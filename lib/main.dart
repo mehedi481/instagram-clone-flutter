@@ -5,6 +5,7 @@ import 'package:instagram_clone_flutter/responsive/mobile_screen_layout.dart';
 import 'package:instagram_clone_flutter/responsive/responsive_layout.dart';
 import 'package:instagram_clone_flutter/responsive/web_screen_layout.dart';
 import 'package:instagram_clone_flutter/screens/login_screen.dart';
+import 'package:instagram_clone_flutter/screens/signup_screen.dart';
 import 'package:instagram_clone_flutter/utils/colors.dart';
 
 void main() async {
@@ -20,8 +21,7 @@ void main() async {
         storageBucket: "instagram-clone-6d998.appspot.com",
       ),
     );
-  }
-  else{
+  } else {
     await Firebase.initializeApp();
   }
   runApp(const MyApp());
@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
       //   mobileScreen: MobileScreenLayout(),
       //   webScreen: WebScreenLayout(),
       // ),
-      home: const LoginScreen(),
+      home: const SignupScreen(),
     );
   }
 }
