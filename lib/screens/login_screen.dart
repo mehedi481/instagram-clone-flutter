@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:instagram_clone_flutter/responsive/mobile_screen_layout.dart';
+import 'package:instagram_clone_flutter/responsive/responsive_layout.dart';
+import 'package:instagram_clone_flutter/responsive/web_screen_layout.dart';
+import 'package:instagram_clone_flutter/screens/signup_screen.dart';
 import 'package:instagram_clone_flutter/services/auth_service.dart';
 import 'package:instagram_clone_flutter/utils/colors.dart';
 import 'package:instagram_clone_flutter/utils/utils.dart';
@@ -32,12 +36,27 @@ class _LoginScreenState extends State<LoginScreen> {
       email: _emailController.text.trim(),
       password: _passwordController.text,
     );
-    if (res != "success") {
+    if (res == "success") {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: ((context) => const ResponsiveLayout(
+                webScreen: WebScreenLayout(),
+                mobileScreen: MobileScreenLayout(),
+              )),
+        ),
+      );
+    } else {
       showSnackBar(context: context, content: res.toString());
     }
     setState(() {
       _isLoading = false;
     });
+  }
+
+  void navigateToSignUpScreen() {
+    Navigator.pushReplacement(context,
+        MaterialPageRoute(builder: ((context) => const SignupScreen())));
   }
 
   @override
@@ -88,10 +107,10 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Container(
                   child: _isLoading
                       ? const Center(
-                        child: CircularProgressIndicator(
+                          child: CircularProgressIndicator(
                             color: primaryColor,
                           ),
-                      )
+                        )
                       : const Text("Log in"),
                   width: double.infinity,
                   alignment: Alignment.center,
@@ -116,9 +135,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   children: [
                     const Text("Don't have an account?"),
                     GestureDetector(
-                      onTap: () {
-                        print("Sign up pressed !");
-                      },
+                      onTap: navigateToSignUpScreen,
                       child: const Text(
                         "Sign up.",
                         style: TextStyle(fontWeight: FontWeight.bold),

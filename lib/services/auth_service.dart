@@ -1,9 +1,7 @@
 import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 import 'package:instagram_clone_flutter/services/storage_service.dart';
-import 'package:instagram_clone_flutter/utils/utils.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -47,12 +45,10 @@ class AuthService {
     } on FirebaseAuthException catch (error) {
       if (error.code == "invalid-email") {
         res = "Please Input a Valid Email";
-        print("Please Input a Valid Email");
       }
       if (error.code == "email-already-in-use") {
-        print("Email already registered");
+        res = "Email already registered";
       }
-      print(error.code.toString());
     }
     return res;
   }
@@ -69,13 +65,15 @@ class AuthService {
     } on FirebaseAuthException catch (e) {
       if (e.code == "invalid-email") {
         res = "Please Input a Valid Email";
-        print("Please Input a Valid Email");
       }
       if (e.code == "user-not-found") {
         res = "User not Found";
       }
       if (e.code == "wrong-password") {
         res = "Wrong password";
+      }
+      if (e.code == "email-already-in-use") {
+        res = "Email already registered";
       }
     }
     return res;
