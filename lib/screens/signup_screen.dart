@@ -36,7 +36,7 @@ class _SignupScreenState extends State<SignupScreen> {
   void selectImage() async {
     Uint8List? img = await pickImage(ImageSource.gallery);
     setState(() {
-      _image = img!;
+      _image = img;
     });
   }
 
@@ -56,7 +56,7 @@ class _SignupScreenState extends State<SignupScreen> {
     });
     print(res);
     if (res != "success") {
-      showSnackBar(context: context, content: res);
+      showSnackBar(context: context, content: res.toString());
     }
   }
 

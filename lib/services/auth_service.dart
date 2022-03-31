@@ -56,4 +56,28 @@ class AuthService {
     }
     return res;
   }
+
+  // Sign in users
+  Future<String> singInUser({
+    required String email,
+    required String password,
+  }) async {
+    String res = "some error occurred";
+    try {
+      await _auth.signInWithEmailAndPassword(email: email, password: password);
+      res = "success";
+    } on FirebaseAuthException catch (e) {
+      if (e.code == "invalid-email") {
+        res = "Please Input a Valid Email";
+        print("Please Input a Valid Email");
+      }
+      if (e.code == "user-not-found") {
+        res = "User not Found";
+      }
+      if (e.code == "wrong-password") {
+        res = "Wrong password";
+      }
+    }
+    return res;
+  }
 }
