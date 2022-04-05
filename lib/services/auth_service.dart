@@ -9,6 +9,14 @@ class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
+  Future<model.UserModel> getUserDetails() async {
+    // This user from firebase auth
+    User currentUser = _auth.currentUser!;
+    DocumentSnapshot snap =
+        await _firestore.collection("users").doc(currentUser.uid).get();
+    return model.UserModel.fromSnap(snap);
+  }
+
   // Sign Up user
   Future<String> signUpUser({
     required String email,
@@ -33,7 +41,8 @@ class AuthService {
             .uploadImageToStorage("profilePics", file, false);
 
         // create user_model instance
-        model.UserModel userModel = model.UserModel(
+        // here we setting this field value to model class
+        model.UserModel _userModel = model.UserModel(
           userName: username,
           uid: userCredential.user!.uid,
           email: email,
@@ -42,12 +51,13 @@ class AuthService {
           followers: [],
           following: [],
         );
+        
         // add user to our database
         await _firestore
             .collection("users")
             .doc(userCredential.user!.uid)
-            .set(userModel.toJson());
-            
+            .set(_userModel.toJson());
+
         res = "success";
       }
     } on FirebaseAuthException catch (error) {
